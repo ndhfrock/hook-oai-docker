@@ -2,6 +2,7 @@ package main
 
 // This APP is made for installing snaps in docker
 import (
+	"flag"
 	"log"
 	"os"
 	"snap-hook-for-docker/oai"
@@ -16,18 +17,39 @@ func main() {
 	}
 	defer logFile.Close()
 	logger := log.New(logFile, "[Debug] ", log.Lshortfile)
-	initAllInOne(logger)
-	logger.Print("End of hook")
 
+	// Parse input flags
+	cn := flag.Bool("cn", false, "a bool")
+	ran := flag.Bool("ran", false, "a bool")
+	flag.Parse()
+
+	// Decide actions based on flags
+	if *cn {
+		initCN(logger)
+	} else if *ran {
+		initRAN(logger)
+	}
+
+	// Give a hello when program ends
+	logger.Print("End of hook")
 }
 
-func initAllInOne(logger *log.Logger) {
-	// Install oai-cn snap
+func initCN(logger *log.Logger) {
+	// Install Snap Core
 	oai.InstallSnap(logger)
+	// Install oai-cn snap
+	oai.InstallOaicn(logger)
 	// Start HSS
 	oai.StartHss(logger)
 	// Start MME
 	oai.StartMme(logger)
 	// Start SPGW
 	oai.StartSpgw(logger)
+}
+
+func initRAN(logger *log.Logger) {
+	// Install Snap Core
+	oai.InstallSnap(logger)
+	// Install oai-ran snap
+	oai.InstallOairan(logger)
 }
