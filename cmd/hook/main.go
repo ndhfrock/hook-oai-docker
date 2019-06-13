@@ -21,6 +21,7 @@ func main() {
 	// Parse input flags
 	cn := flag.Bool("cn", false, "a bool")
 	ran := flag.Bool("ran", false, "a bool")
+	snapCNOnly := flag.Bool("snapCNOnly", false, "a bool")
 	flag.Parse()
 
 	// Decide actions based on flags
@@ -28,10 +29,19 @@ func main() {
 		initCN(logger)
 	} else if *ran {
 		initRAN(logger)
+	} else if *snapCNOnly {
+		initSnapCNOnly(logger)
 	}
 
 	// Give a hello when program ends
 	logger.Print("End of hook")
+}
+
+func initSnapCNOnly(logger *log.Logger) {
+	// Install Snap Core
+	oai.InstallSnap(logger)
+	// Install oai-cn snap
+	oai.InstallOaicn(logger)
 }
 
 func initCN(logger *log.Logger) {
