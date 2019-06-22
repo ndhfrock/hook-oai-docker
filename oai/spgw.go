@@ -6,15 +6,15 @@ import (
 )
 
 // StartSpgw : Start SPGW as a daemon
-func StartSpgw(logger *log.Logger) {
+func startSpgw(logger *log.Logger) {
 	sedCommand := "101s/8.8.8.8/8.8.8.8/g"
 	// Init spgw
 	logger.Print("Init spgw")
 	util.RunCmd(logger, "/snap/bin/oai-cn.spgw-init")
 	// Configure oai-spgw
 	logger.Print("Configure spgw.conf")
-	util.RunCmd(logger, "sed", "-i", "30s/eth0/lo/g", "/var/snap/oai-cn/28/spgw.conf")
-	util.RunCmd(logger, "sed", "-i", "31s/192.168.11.17/127.0.1.10/g", "/var/snap/oai-cn/28/spgw.conf")
+	util.RunCmd(logger, "sed", "-i", "30s/eth0/lo/g", "/var/snap/oai-cn/current/spgw.conf")
+	util.RunCmd(logger, "sed", "-i", "31s/192.168.11.17/127.0.1.10/g", "/var/snap/oai-cn/current/spgw.conf")
 	//Get the nameserver of current env
 	nameserver, err := util.GetNameserver(logger)
 	if err != nil {
@@ -22,7 +22,7 @@ func StartSpgw(logger *log.Logger) {
 	} else {
 		sedCommand = "101s/8.8.8.8/" + nameserver + "/g"
 	}
-	util.RunCmd(logger, "sed", "-i", sedCommand, "/var/snap/oai-cn/28/spgw.conf")
+	util.RunCmd(logger, "sed", "-i", sedCommand, "/var/snap/oai-cn/current/spgw.conf")
 
 	// oai-cn.spgw-start
 	logger.Print("start spgw as daemon")

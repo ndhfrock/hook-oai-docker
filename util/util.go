@@ -8,7 +8,7 @@ import (
 	"github.com/go-cmd/cmd"
 )
 
-// RunCmd : Run external commands in sync. Return stdout[0].
+// RunCmd will run external commands in sync. Return stdout[0].
 func RunCmd(logger *log.Logger, cmdName string, args ...string) cmd.Status {
 	installSnap := cmd.NewCmd(cmdName, args...)
 	finalStatus := <-installSnap.Start() // block and wait
@@ -17,7 +17,7 @@ func RunCmd(logger *log.Logger, cmdName string, args ...string) cmd.Status {
 	return finalStatus
 }
 
-// GetNameserver : Get Nameserver of the current ENV
+// GetNameserver will get Nameserver of the current ENV
 func GetNameserver(logger *log.Logger) (string, error) {
 	retStatus := RunCmd(logger, "nslookup", "google.com")
 	if retStatus.Exit != 0 {
@@ -30,4 +30,24 @@ func GetNameserver(logger *log.Logger) (string, error) {
 		return "", errors.New("Error in parsing results")
 	}
 	return response[1], nil
+}
+
+//CheckSnapPackageExist will return if this package is already exist or not
+func CheckSnapPackageExist(logger *log.Logger, packageName string) (bool, error) {
+	if len(packageName) <= 0 {
+		return false, errors.New("Input package name is empty")
+	}
+	retStatus := RunCmd(logger, "snap", "list")
+	if retStatus.Exit != 0 {
+		return false, errors.New("snap list return non-zero")
+	}
+	for i := 0; i < len(retStatus.Stdout); i++ {
+		if strings.Contains(retStatus.Stdout[i], packageName) {
+			logger.Println("Package: ", packageName, " Exist")
+			return true, nil
+		}
+
+	}
+	logger.Println("Package: ", packageName, " does not Exist")
+	return false, nil
 }
