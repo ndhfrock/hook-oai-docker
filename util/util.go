@@ -3,6 +3,7 @@ package util
 import (
 	"errors"
 	"log"
+	"net"
 	"strings"
 
 	"github.com/go-cmd/cmd"
@@ -50,4 +51,34 @@ func CheckSnapPackageExist(logger *log.Logger, packageName string) (bool, error)
 	}
 	logger.Println("Package: ", packageName, " does not Exist")
 	return false, nil
+}
+
+//GetInterfaceIP will get the ip of the interface. If failed, it'll return a default (127.0.1.10) value
+func GetInterfaceIP(logger *log.Logger, interfaceName string) (string, error) {
+	ret := RunCmd(logger, "ifconfig", interfaceName)
+	if ret.Exit != 0 {
+		return "127.0.1.10", errors.New("Fail to run ifconfig")
+	}
+	if len(ret.Stdout) <= 0 {
+		return "127.0.1.10", errors.New("Fail to get result")
+	}
+	i := 0
+	space := " "
+	for {
+		if ret.Stdout[1][27+i+1] == space[0] {
+			break
+		}
+		i++
+	}
+	return ret.Stdout[1][20 : 27+i+1], nil
+}
+
+//GetIPFromDomain will get the IP of the domain
+func GetIPFromDomain(logger *log.Logger, domain string) (string, error) {
+	addr, err := net.LookupHost(domain)
+	if err != nil {
+		logger.Print("Failed to get IP from domain")
+		return "", err
+	}
+	return addr[0], nil
 }

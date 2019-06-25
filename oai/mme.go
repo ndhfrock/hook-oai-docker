@@ -16,9 +16,16 @@ func startMme(logger *log.Logger) {
 	logger.Print("Configure mme.conf")
 	sedCommand := "56s/ubuntu/" + hostname + "/g"
 	util.RunCmd(logger, "sed", "-i", sedCommand, "/var/snap/oai-cn/current/mme.conf")
-	util.RunCmd(logger, "sed", "-i", "153s/eth0/lo/g", "/var/snap/oai-cn/current/mme.conf")
-	util.RunCmd(logger, "sed", "-i", "154s/192.168.11.17/127.0.1.10/g", "/var/snap/oai-cn/current/mme.conf")
-	//Replace Identity
+	// Configure interface name
+	util.RunCmd(logger, "sed", "-i", "153s/lo/eth0/g", "/var/snap/oai-cn/current/mme.conf")
+	// Get eth0 ip and replace the default one
+	eth0IP, _ := util.GetInterfaceIP(logger, "eth0")
+	sedCommand = "154s:\".*;:\"" + eth0IP + "/24\";:g"
+	util.RunCmd(logger, "sed", "-i", sedCommand, "/var/snap/oai-cn/current/mme.conf")
+	// Replace MNC
+	util.RunCmd(logger, "sed", "-i", "78s/93/95/g", "/var/snap/oai-cn/current/mme.conf")
+	util.RunCmd(logger, "sed", "-i", "87s/93/95/g", "/var/snap/oai-cn/current/mme.conf")
+	// Replace Identity
 	logger.Print("Configure mme_fd.conf")
 	sedCommand = "4s/ubuntu/" + hostname + "/g"
 	util.RunCmd(logger, "sed", "-i", sedCommand, "/var/snap/oai-cn/current/mme_fd.conf")

@@ -80,5 +80,8 @@ func installOairan(logger *log.Logger) {
 	if !ret {
 		util.RunCmd(logger, "snap", "install", "oai-ran", "--channel=edge", "--devmode")
 	}
+	//Wait a moment, cn is not ready yet !
+	logger.Print("Wait 5 seconds... OK now cn should be ready")
+	time.Sleep(5 * time.Second)
 
 }

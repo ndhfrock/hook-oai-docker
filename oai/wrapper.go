@@ -33,6 +33,7 @@ func InstallRAN(logger *log.Logger) {
 	installOairan(logger)
 }
 
-//StartRAN is a wrapper for configuring and starting OAI RAN services
-func StartRAN(logger *log.Logger) {
+//StartENB is a wrapper for configuring and starting OAI RAN services
+func StartENB(logger *log.Logger) {
+	startENB(logger)
 }

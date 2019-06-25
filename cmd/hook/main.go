@@ -33,6 +33,7 @@ func main() {
 		oai.StartCN(logger)
 	} else if *ran {
 		oai.InstallRAN(logger)
+		oai.StartENB(logger)
 	} else if *snapCNOnly {
 		oai.InstallCN(logger)
 	}
