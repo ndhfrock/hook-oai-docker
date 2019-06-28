@@ -1,0 +1,9 @@
+MCC: "208"                 
+MNC: "93"                   
+EutraBand: "7"             
+DownlinkFrequency: "2685000000L"    
+UplinkFrequencyOffset: "-120000000"
+configurationPathofCN: "/var/snap/oai-cn/current/"
+configurationPathofRAN: "/var/snap/oai-ran/current/"
+snapBinaryPath: "/snap/bin/"
+test: true

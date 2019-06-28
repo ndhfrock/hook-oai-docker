@@ -1,39 +1,37 @@
 package oai
 
-import "log"
-
 //InstallSnap is a wrapper function for installSnapCore
-func InstallSnap(logger *log.Logger) {
+func InstallSnap(OaiObj Oai) {
 	// Install Snap Core
-	installSnapCore(logger)
+	installSnapCore(OaiObj)
 }
 
 //InstallCN is a wrapper for installing OAI CN
-func InstallCN(logger *log.Logger) {
+func InstallCN(OaiObj Oai) {
 
 	// Install oai-cn snap
-	installOaicn(logger)
+	installOaicn(OaiObj)
 
 }
 
 // StartCN is a wrapper for configuring and starting OAI CN services
-func StartCN(logger *log.Logger) {
+func StartCN(OaiObj Oai) {
 	// Start HSS
-	startHss(logger)
+	startHss(OaiObj)
 	// Start MME
-	startMme(logger)
+	startMme(OaiObj)
 	// Start SPGW
-	startSpgw(logger)
+	startSpgw(OaiObj)
 }
 
 //InstallRAN is a wrapper for installing OAI RAN
-func InstallRAN(logger *log.Logger) {
+func InstallRAN(OaiObj Oai) {
 
 	// Install oai-ran snap
-	installOairan(logger)
+	installOairan(OaiObj)
 }
 
 //StartENB is a wrapper for configuring and starting OAI RAN services
-func StartENB(logger *log.Logger) {
-	startENB(logger)
+func StartENB(OaiObj Oai) {
+	startENB(OaiObj)
 }
