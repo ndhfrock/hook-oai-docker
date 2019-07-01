@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// InstallSnapCore : Install Core
+// installSnapCore : Install Core
 func installSnapCore(OaiObj Oai) {
 	//Install Core
 	OaiObj.Logger.Print("Installing core")
@@ -46,7 +46,7 @@ func installSnapCore(OaiObj Oai) {
 
 }
 
-// InstallOaicn : Install oai-cn snap
+// installOaicn : Install oai-cn snap
 func installOaicn(OaiObj Oai) {
 	OaiObj.Logger.Print("Configure hostname before installing ")
 	// Copy hosts
@@ -68,7 +68,7 @@ func installOaicn(OaiObj Oai) {
 
 }
 
-// InstallOairan : Install oai-ran snap
+// installOairan : Install oai-ran snap
 func installOairan(OaiObj Oai) {
 	// Install oai-ran snap
 	OaiObj.Logger.Print("Installing oai-ran")
@@ -81,6 +81,40 @@ func installOairan(OaiObj Oai) {
 	}
 	//Wait a moment, cn is not ready yet !
 	OaiObj.Logger.Print("Wait 5 seconds... OK now cn should be ready")
+	time.Sleep(5 * time.Second)
+
+}
+
+// installFlexRAN : Install FlexRAN snap
+func installFlexRAN(OaiObj Oai) {
+	// Install FlexRAN snap
+	OaiObj.Logger.Print("Installing FlexRAN")
+	ret, err := util.CheckSnapPackageExist(OaiObj.Logger, "flexran")
+	if err != nil {
+		OaiObj.Logger.Print(err)
+	}
+	if !ret {
+		util.RunCmd(OaiObj.Logger, "snap", "install", "flexran", "--channel=edge", "--devmode")
+	}
+	//Wait a moment, cn is not ready yet !
+	OaiObj.Logger.Print("Wait 5 seconds... OK now flexran should be ready")
+	time.Sleep(5 * time.Second)
+
+}
+
+// installMEC : Install LL-MEC snap
+func installMEC(OaiObj Oai) {
+	// Install LL-MEC snap
+	OaiObj.Logger.Print("Installing LL-MEC")
+	ret, err := util.CheckSnapPackageExist(OaiObj.Logger, "ll-mec")
+	if err != nil {
+		OaiObj.Logger.Print(err)
+	}
+	if !ret {
+		util.RunCmd(OaiObj.Logger, "snap", "install", "ll-mec", "--channel=edge", "--devmode")
+	}
+	//Wait a moment, cn is not ready yet !
+	OaiObj.Logger.Print("Wait 5 seconds... OK now ll-mec should be ready")
 	time.Sleep(5 * time.Second)
 
 }

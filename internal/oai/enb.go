@@ -1,19 +1,31 @@
 package oai
 
 import (
+	"errors"
 	"fmt"
 	"oai-snap-in-docker/internal/pkg/util"
 	"time"
 )
 
-func startENB(OaiObj Oai) {
+func startENB(OaiObj Oai) error {
 	c := OaiObj.Conf
 	enbConf := c.ConfigurationPathofRAN + "enb.band7.tm1.50PRB.usrpb210.conf"
 	mmeDomain := c.MmeDomainName
-	// Replace MNC
-	// Get MMC MNC from conf
-	sedCommand := "18s:\"plmn_list.*;\":\"plmn_list = ( { mcc = " + c.MCC + "; mnc = " + c.MNC + "; mnc_length = 2; } );\":g"
-	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+	// Replace MCC
+	sedCommand := "s/mcc =.[^;]*/mcc = " + c.MCC + "/g"
+	OaiObj.Logger.Print(sedCommand)
+	retStatus := util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+	if retStatus.Exit != 0 {
+		return errors.New("Set MCC in " + enbConf + " failed")
+	}
+	OaiObj.Logger.Print("Replace MNC")
+	//Replace MNC
+	sedCommand = "s/mnc =.[^;]*/mnc = " + c.MNC + "/g"
+	OaiObj.Logger.Print(sedCommand)
+	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+	if retStatus.Exit != 0 {
+		return errors.New("Set MNC in " + enbConf + " failed")
+	}
 	// Get mme ip
 	mmeIP, err := util.GetIPFromDomain(OaiObj.Logger, mmeDomain)
 	if err != nil {
@@ -39,15 +51,33 @@ func startENB(OaiObj Oai) {
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	sedCommand = "197s:\".*;:\"" + eth0IP + "/24\";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+	// Set up FlexRAN
+	if OaiObj.Conf.FlexRAN == true {
+		// Get flexRAN ip
+		flexranIP, err := util.GetIPFromDomain(OaiObj.Logger, OaiObj.Conf.FlexRANDomainName)
+		if err != nil {
+			fmt.Print(err)
+			flexranIP = "10.10.10.10"
+		}
+		sedCommand = "s:\"FLEXRAN_ENABLED*\":\"    FLEXRAN_ENABLED=        \"yes\";\":g"
+		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+		sedCommand = "s:\"FLEXRAN_INTERFACE_NAME*\":\"    FLEXRAN_INTERFACE_NAME= \"eth0\";\":g"
+		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+		sedCommand = "s:\"FLEXRAN_IPV4_ADDRESS*\":\"    FLEXRAN_IPV4_ADDRESS   = \"" + flexranIP + "\";\":g"
+		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+	} else {
+		sedCommand = "s:\"FLEXRAN_ENABLED*\":\"    FLEXRAN_ENABLED=        \"no\";\":g"
+		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+	}
 	// Start enb
 	OaiObj.Logger.Print("Start enb daemon")
 	for {
 		retStatus := util.RunCmd(OaiObj.Logger, "/snap/bin/oai-ran.enb-start")
-		if retStatus.Complete == true {
+		if len(retStatus.Stderr) == 0 {
 			break
 		}
 		OaiObj.Logger.Print("Start enb failed, try again later")
 		time.Sleep(1 * time.Second)
 	}
-
+	return nil
 }

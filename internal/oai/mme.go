@@ -40,15 +40,17 @@ func startMme(OaiObj Oai) error {
 	}
 	// Replace GUMMEI
 	OaiObj.Logger.Print("Replace MNC")
-	sedCommand = "s:\"MNC=\\\"93\\\"\":\"MNC=\\\"" + c.MNC + "\\\" \":g"
+	sedCommand = "s/MNC=\"93\"/\"MNC=\"" + c.MNC + "\\\" \"/g"
+	OaiObj.Logger.Print(sedCommand)
 	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {
 		return errors.New("Set GUMMEI in " + mmeConf + " failed")
 	}
 	OaiObj.Logger.Print("Replace MCC")
 	//Replace MCC
-	sedCommand = "s:\"{MCC=\\\"208\\\"\":\"{MCC=\\\"" + c.MCC + "\\\" \":g"
-	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", "87s/93/95/g", mmeConf)
+	sedCommand = "s:{MCC=\"208\":{MCC=\"" + c.MCC + "\":g"
+	OaiObj.Logger.Print(sedCommand)
+	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {
 		return errors.New("Set TAI in " + mmeConf + " failed")
 	}

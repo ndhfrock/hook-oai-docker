@@ -35,3 +35,24 @@ func InstallRAN(OaiObj Oai) {
 func StartENB(OaiObj Oai) {
 	startENB(OaiObj)
 }
+
+//InstallFlexRAN is a wrapper for installing FlexRAN
+func InstallFlexRAN(OaiObj Oai) {
+
+	// Install flexran snap
+	installFlexRAN(OaiObj)
+}
+
+//StartFlexRAN is a wrapper for installing FlexRAN
+func StartFlexRAN(OaiObj Oai) {
+
+	// start FlexRAN
+	startFlexRAN(OaiObj)
+}
+
+//InstallMEC is a wrapper for installing LL-MEC
+func InstallMEC(OaiObj Oai) {
+
+	// Install ll-mec snap
+	installMEC(OaiObj)
+}

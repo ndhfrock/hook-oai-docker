@@ -28,6 +28,8 @@ func main() {
 	runENB := flag.Bool("runENB", false, "a bool")
 	installCN := flag.Bool("installCN", false, "a bool")
 	installRAN := flag.Bool("installRAN", false, "a bool")
+	installFlexRAN := flag.Bool("installFlexRAN", false, "a bool")
+	installMEC := flag.Bool("installMEC", false, "a bool")
 	flag.Parse()
 	//Install snap core
 	oai.InstallSnap(OaiObj)
@@ -42,6 +44,11 @@ func main() {
 	} else if *installRAN {
 		oai.InstallRAN(OaiObj)
 		oai.StartENB(OaiObj)
+	} else if *installFlexRAN {
+		oai.InstallFlexRAN(OaiObj)
+		oai.StartFlexRAN(OaiObj)
+	} else if *installMEC {
+		oai.InstallMEC(OaiObj)
 	} else {
 		fmt.Println("This should only be executed in container!!")
 		return

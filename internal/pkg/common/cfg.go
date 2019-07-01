@@ -19,6 +19,8 @@ type Cfg struct {
 	SnapBinaryPath         string `yaml:"snapBinaryPath"`
 	DNS                    string `yaml:"dns"`
 	MmeDomainName          string `yaml:"mmeDomainName"`
+	FlexRAN                bool   `yaml:"flexRAN"`
+	FlexRANDomainName      string `yaml:"flexRANDomainName"`
 	Test                   bool   `yaml:"test"` //test configuring without changing any file; No snap is installed
 }
 

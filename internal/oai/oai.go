@@ -27,6 +27,8 @@ func (me *Oai) Init(logPath string, confPath string) error {
 	if err != nil {
 		return err
 	}
+	me.Logger.Print("Configs:")
+	me.Logger.Print(me.Conf)
 	return nil
 }
 
