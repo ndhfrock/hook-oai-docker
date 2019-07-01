@@ -54,19 +54,28 @@ func startENB(OaiObj Oai) error {
 	// Set up FlexRAN
 	if OaiObj.Conf.FlexRAN == true {
 		// Get flexRAN ip
-		flexranIP, err := util.GetIPFromDomain(OaiObj.Logger, OaiObj.Conf.FlexRANDomainName)
-		if err != nil {
-			fmt.Print(err)
-			flexranIP = "10.10.10.10"
+		var flexranIP string
+		OaiObj.Logger.Print("Configure FlexRAN Parameters")
+		for {
+			
+			flexranIP, err = util.GetIPFromDomain(OaiObj.Logger, c.FlexRANDomainName)
+			if err == nil {
+				break
+			}else{
+				OaiObj.Logger.Print(err)
+				OaiObj.Logger.Print("Getting IP of FlexRAN failed, try again later")
+				time.Sleep(1 * time.Second)
+			}
 		}
-		sedCommand = "s:\"FLEXRAN_ENABLED*\":\"    FLEXRAN_ENABLED=        \"yes\";\":g"
+		sedCommand = "s:FLEXRAN_ENABLED.*;:FLEXRAN_ENABLED=        \"yes\";:g"
 		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
-		sedCommand = "s:\"FLEXRAN_INTERFACE_NAME*\":\"    FLEXRAN_INTERFACE_NAME= \"eth0\";\":g"
+		sedCommand = "s:FLEXRAN_INTERFACE_NAME.*;:FLEXRAN_INTERFACE_NAME= \"eth0\";:g"
 		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
-		sedCommand = "s:\"FLEXRAN_IPV4_ADDRESS*\":\"    FLEXRAN_IPV4_ADDRESS   = \"" + flexranIP + "\";\":g"
+		sedCommand = "s:FLEXRAN_IPV4_ADDRESS.*;:FLEXRAN_IPV4_ADDRESS   = \"" + flexranIP + "\";:g"
 		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	} else {
-		sedCommand = "s:\"FLEXRAN_ENABLED*\":\"    FLEXRAN_ENABLED=        \"no\";\":g"
+		OaiObj.Logger.Print("Disable FlexRAN Feature")
+		sedCommand = "s:FLEXRAN_ENABLED.*;:FLEXRAN_ENABLED=        \"no\";:g"
 		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	}
 	// Start enb

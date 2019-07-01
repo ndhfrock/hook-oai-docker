@@ -8,7 +8,7 @@ import (
 func startFlexRAN(OaiObj Oai) error {
 	OaiObj.Logger.Print("Start flexran daemon")
 	for {
-		retStatus := util.RunCmd(OaiObj.Logger, "/snap/bin/flexran-start")
+		retStatus := util.RunCmd(OaiObj.Logger, "/snap/bin/flexran.start")
 		if len(retStatus.Stderr) == 0 {
 			break
 		}
