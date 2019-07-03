@@ -5,11 +5,6 @@ import (
 	"testing"
 )
 
-const (
-	logPath  = "./hook.log"
-	confPath = "./conf.yaml"
-)
-
 // Unfinished
 func TestMME(t *testing.T) {
 	// Initialize oai struct

@@ -9,17 +9,20 @@ import (
 
 // Cfg stores available settings
 type Cfg struct {
-	MCC                    string `yaml:"mcc"`
-	MNC                    string `yaml:"mnc"`
-	EutraBand              string `yaml:"eutraBand"`
-	DownlinkFrequency      string `yaml:"downlinkFrequency"`
-	UplinkFrequencyOffset  string `yaml:"uplinkFrequencyOffset"`
+	// Configurations of ENB
+	MCC                   string `yaml:"mcc"`
+	MNC                   string `yaml:"mnc"`
+	EutraBand             string `yaml:"eutraBand"`
+	DownlinkFrequency     string `yaml:"downlinkFrequency"`
+	UplinkFrequencyOffset string `yaml:"uplinkFrequencyOffset"`
+	FlexRAN               bool   `yaml:"flexRAN"`
+	// Global setting
 	ConfigurationPathofCN  string `yaml:"configurationPathofCN"`
 	ConfigurationPathofRAN string `yaml:"configurationPathofRAN"`
 	SnapBinaryPath         string `yaml:"snapBinaryPath"`
 	DNS                    string `yaml:"dns"`
 	MmeDomainName          string `yaml:"mmeDomainName"`
-	FlexRAN                bool   `yaml:"flexRAN"`
+	SpgwDomainName         string `yaml:"SpgwDomainName"`
 	FlexRANDomainName      string `yaml:"flexRANDomainName"`
 	Test                   bool   `yaml:"test"` //test configuring without changing any file; No snap is installed
 }
