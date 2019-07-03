@@ -4,6 +4,7 @@ import (
 	"log"
 	"oai-snap-in-docker/internal/pkg/common"
 	"os"
+	"time"
 )
 
 // Oai stores the log and conf
@@ -21,7 +22,7 @@ func (me *Oai) Init(logPath string, confPath string) error {
 		return err
 	}
 	me.logFile = newFile
-	me.Logger = log.New(me.logFile, "[Debug] ", log.Lshortfile)
+	me.Logger = log.New(me.logFile, "[Debug]"+time.Now().Format("2006-01-02 15:04:05")+" ", log.Lshortfile)
 	me.Conf = new(common.Cfg)
 	err = me.Conf.GetConf(me.Logger, confPath)
 	if err != nil {

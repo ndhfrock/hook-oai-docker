@@ -10,7 +10,9 @@ func startSpgw(OaiObj Oai) {
 	spgwBin := OaiObj.Conf.SnapBinaryPath + "oai-cn.spgw"
 	// Init spgw
 	OaiObj.Logger.Print("Init spgw")
-	util.RunCmd(OaiObj.Logger, spgwBin+"-init")
+	if OaiObj.Conf.Test == false {
+		util.RunCmd(OaiObj.Logger, spgwBin+"-init")
+	}
 	// Configure oai-spgw
 	OaiObj.Logger.Print("Configure spgw.conf")
 	//Set up interface
@@ -23,6 +25,8 @@ func startSpgw(OaiObj Oai) {
 	sedCommand = "101s:\".*;:\"" + OaiObj.Conf.DNS + "\";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, spgwConf)
 	// oai-cn.spgw-start
-	OaiObj.Logger.Print("start spgw as daemon")
-	util.RunCmd(OaiObj.Logger, spgwBin+"-start")
+	if OaiObj.Conf.Test == false {
+		OaiObj.Logger.Print("start spgw as daemon")
+		util.RunCmd(OaiObj.Logger, spgwBin+"-start")
+	}
 }

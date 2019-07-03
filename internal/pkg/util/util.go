@@ -18,21 +18,6 @@ func RunCmd(logger *log.Logger, cmdName string, args ...string) cmd.Status {
 	return finalStatus
 }
 
-// GetNameserver will get Nameserver of the current ENV
-func GetNameserver(logger *log.Logger) (string, error) {
-	retStatus := RunCmd(logger, "nslookup", "google.com")
-	if retStatus.Exit != 0 {
-		return "", errors.New("nslookup return non-zero")
-	} else if len(retStatus.Stdout) < 2 {
-		return "", errors.New("len(stdout) < 2")
-	}
-	response := strings.Fields(retStatus.Stdout[0])
-	if len(response) < 2 {
-		return "", errors.New("Error in parsing results")
-	}
-	return response[1], nil
-}
-
 //CheckSnapPackageExist will return if this package is already exist or not
 func CheckSnapPackageExist(logger *log.Logger, packageName string) (bool, error) {
 	if len(packageName) <= 0 {
@@ -81,4 +66,48 @@ func GetIPFromDomain(logger *log.Logger, domain string) (string, error) {
 		return "", err
 	}
 	return addr[0], nil
+}
+
+// GetOutboundIP gets preferred outbound ip of this machine
+func GetOutboundIP() string {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+
+	return localAddr.IP.String()
+}
+
+// GetInterfaceByIP can get interface name from IP
+func GetInterfaceByIP(targetIP string) (string, error) {
+	ifaces, err := net.Interfaces()
+	// handle err
+	if err != nil {
+		return "", err
+	}
+	for _, i := range ifaces {
+		addrs, err := i.Addrs()
+		if err != nil {
+			return "", err
+		}
+		// handle err
+		for _, addr := range addrs {
+			var ip net.IP
+			switch v := addr.(type) {
+			case *net.IPNet:
+				ip = v.IP
+			case *net.IPAddr:
+				ip = v.IP
+			}
+			if ip.String() == targetIP {
+
+				return i.Name, nil
+			}
+			// process IP address
+		}
+	}
+	return "", err
 }

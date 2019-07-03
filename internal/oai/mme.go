@@ -13,16 +13,18 @@ func startMme(OaiObj Oai) error {
 	mmeFdConf := c.ConfigurationPathofCN + "mme_fd.conf"
 	mmeBin := c.SnapBinaryPath + "oai-cn.mme"
 	// Init mme
-	OaiObj.Logger.Print("Init mme")
-	retStatus := util.RunCmd(OaiObj.Logger, mmeBin+"-init")
-	if retStatus.Exit != 0 {
-		return errors.New("mme init failed ")
+	if OaiObj.Conf.Test == false {
+		OaiObj.Logger.Print("Init mme")
+		retStatus := util.RunCmd(OaiObj.Logger, mmeBin+"-init")
+		if retStatus.Exit != 0 {
+			return errors.New("mme init failed ")
+		}
 	}
 	hostname, _ := os.Hostname()
 	// Configure oai-mme
 	OaiObj.Logger.Print("Configure mme.conf")
-	sedCommand := "56s/ubuntu/" + hostname + "/g"
-	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
+	sedCommand := "56s/ubuntu/" + c.HssDomainName + "/g"
+	retStatus := util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {
 		return errors.New("Set mme domain name in " + mmeConf + " failed")
 	}
@@ -67,7 +69,9 @@ func startMme(OaiObj Oai) error {
 		return errors.New("Set hostname in " + mmeFdConf + " failed")
 	}
 	// oai-cn.mme-start
-	OaiObj.Logger.Print("start mme as daemon")
-	util.RunCmd(OaiObj.Logger, mmeBin+"-start")
+	if OaiObj.Conf.Test == false {
+		OaiObj.Logger.Print("start mme as daemon")
+		util.RunCmd(OaiObj.Logger, mmeBin+"-start")
+	}
 	return nil
 }

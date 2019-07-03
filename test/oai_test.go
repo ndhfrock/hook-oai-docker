@@ -5,8 +5,7 @@ import (
 	"testing"
 )
 
-// Unfinished
-func TestMME(t *testing.T) {
+func TestOAI(t *testing.T) {
 	// Initialize oai struct
 	OaiObj := oai.Oai{}
 	err := OaiObj.Init(logPath, confPath)
@@ -14,5 +13,6 @@ func TestMME(t *testing.T) {
 		t.Error("Init Oaiobj failed") // to indicate test failed
 		return
 	}
+	oai.StartCN(OaiObj)
 
 }

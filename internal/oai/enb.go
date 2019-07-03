@@ -56,16 +56,10 @@ func startENB(OaiObj Oai) error {
 		// Get flexRAN ip
 		var flexranIP string
 		OaiObj.Logger.Print("Configure FlexRAN Parameters")
-		for {
-			
-			flexranIP, err = util.GetIPFromDomain(OaiObj.Logger, c.FlexRANDomainName)
-			if err == nil {
-				break
-			}else{
-				OaiObj.Logger.Print(err)
-				OaiObj.Logger.Print("Getting IP of FlexRAN failed, try again later")
-				time.Sleep(1 * time.Second)
-			}
+		flexranIP, err = util.GetIPFromDomain(OaiObj.Logger, c.FlexRANDomainName)
+		if err != nil {
+			OaiObj.Logger.Print(err)
+			OaiObj.Logger.Print("Getting IP of FlexRAN failed, try again later")
 		}
 		sedCommand = "s:FLEXRAN_ENABLED.*;:FLEXRAN_ENABLED=        \"yes\";:g"
 		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
@@ -79,14 +73,16 @@ func startENB(OaiObj Oai) error {
 		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	}
 	// Start enb
-	OaiObj.Logger.Print("Start enb daemon")
-	for {
-		retStatus := util.RunCmd(OaiObj.Logger, "/snap/bin/oai-ran.enb-start")
-		if len(retStatus.Stderr) == 0 {
-			break
+	if OaiObj.Conf.Test == false {
+		OaiObj.Logger.Print("Start enb daemon")
+		for {
+			retStatus := util.RunCmd(OaiObj.Logger, "/snap/bin/oai-ran.enb-start")
+			if len(retStatus.Stderr) == 0 {
+				break
+			}
+			OaiObj.Logger.Print("Start enb failed, try again later")
+			time.Sleep(1 * time.Second)
 		}
-		OaiObj.Logger.Print("Start enb failed, try again later")
-		time.Sleep(1 * time.Second)
 	}
 	return nil
 }

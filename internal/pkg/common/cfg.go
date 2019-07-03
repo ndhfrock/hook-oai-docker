@@ -21,9 +21,10 @@ type Cfg struct {
 	ConfigurationPathofRAN string `yaml:"configurationPathofRAN"`
 	SnapBinaryPath         string `yaml:"snapBinaryPath"`
 	DNS                    string `yaml:"dns"`
-	HssDomainName 		   string `yaml:"haaDomainName"`
+	HssDomainName          string `yaml:"hssDomainName"`
 	MmeDomainName          string `yaml:"mmeDomainName"`
 	SpgwDomainName         string `yaml:"spgwDomainName"`
+	MysqlDomainName        string `yaml:"mysqlDomainName"`
 	FlexRANDomainName      string `yaml:"flexRANDomainName"`
 	Test                   bool   `yaml:"test"` //test configuring without changing any file; No snap is installed
 }
