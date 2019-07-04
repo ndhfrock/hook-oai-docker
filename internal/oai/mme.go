@@ -26,16 +26,18 @@ func startMme(OaiObj Oai) error {
 	sedCommand := "56s/ubuntu/" + c.HssDomainName + "/g"
 	retStatus := util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {
-		return errors.New("Set mme domain name in " + mmeConf + " failed")
+		return errors.New("Set hss domain name in " + mmeConf + " failed")
 	}
 	// Configure interface name
-	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", "153s/lo/eth0/g", mmeConf)
+	outInterface := util.GetOutboundIP()
+	sedCommand = "153s/lo/" + outInterface + "/g"
+	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {
 		return errors.New("Set interface name in " + mmeConf + " failed")
 	}
 	// Get eth0 ip and replace the default one
-	eth0IP, _ := util.GetInterfaceIP(OaiObj.Logger, "eth0")
-	sedCommand = "154s:\".*;:\"" + eth0IP + "/24\";:g"
+	outInterfaceIP, _ := util.GetInterfaceIP(OaiObj.Logger, outInterface)
+	sedCommand = "154s:\".*;:\"" + outInterfaceIP + "/24\";:g"
 	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {
 		return errors.New("Set interface IP in " + mmeConf + " failed")
@@ -63,6 +65,7 @@ func startMme(OaiObj Oai) error {
 	if retStatus.Exit != 0 {
 		return errors.New("Set Identity in " + mmeFdConf + " failed")
 	}
+	// Replace the hostname of Peer conectivity address
 	sedCommand = "103s/ubuntu/" + hostname + "/g"
 	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeFdConf)
 	if retStatus.Exit != 0 {

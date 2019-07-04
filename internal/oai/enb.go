@@ -40,16 +40,22 @@ func startENB(OaiObj Oai) error {
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	sedCommand = "175s:\".*;:\"" + mmeIP + "\";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+	// Get Outbound IP
+	outIP := util.GetOutboundIP()
+	outInterface, err := util.GetInterfaceByIP(outIP)
+	if err != nil {
+		fmt.Print(err)
+	}
 	// Replace interface
-	util.RunCmd(OaiObj.Logger, "sed", "-i", "191s/eno1/eth0/g", enbConf)
-	util.RunCmd(OaiObj.Logger, "sed", "-i", "193s/eno1/eth0/g", enbConf)
+	sedCommand = "191s/eno1/" + outInterface + "/g"
+	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
+	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	// Replace enb IP
-	eth0IP, _ := util.GetInterfaceIP(OaiObj.Logger, "eth0")
-	sedCommand = "192s:\".*;:\"" + eth0IP + "/23\";:g"
+	sedCommand = "192s:\".*;:\"" + outIP + "/23\";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
-	sedCommand = "194s:\".*;:\"" + eth0IP + "/23\";:g"
+	sedCommand = "194s:\".*;:\"" + outIP + "/23\";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
-	sedCommand = "197s:\".*;:\"" + eth0IP + "/24\";:g"
+	sedCommand = "197s:\".*;:\"" + outIP + "/24\";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	// Set up FlexRAN
 	if OaiObj.Conf.FlexRAN == true {
