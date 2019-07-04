@@ -15,13 +15,13 @@ func startSpgw(OaiObj Oai) {
 	}
 	// Configure oai-spgw
 	OaiObj.Logger.Print("Configure spgw.conf")
-	// Get outbound interface
-	outInterface := util.GetOutboundIP()
-	sedCommand := "30s/lo/" + outInterface + "/g"
-	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, spgwConf)
 	// Get interface IP and configure the spgw.conf
-	eth0IP, _ := util.GetInterfaceIP(OaiObj.Logger, outInterface)
-	sedCommand = "31s:\".*;:\"" + eth0IP + "/24\";:g"
+	interfaceIP := util.GetOutboundIP()
+	sedCommand := "31s:\".*;:\"" + interfaceIP + "/24\";:g"
+	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, spgwConf)
+	// Get outbound interface
+	outInterface,_ := util.GetInterfaceByIP(interfaceIP)
+	sedCommand = "30s/lo/" + outInterface + "/g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, spgwConf)
 	// Get the nameserver from conf
 	sedCommand = "101s:\".*;:\"" + OaiObj.Conf.DNS + "\";:g"
