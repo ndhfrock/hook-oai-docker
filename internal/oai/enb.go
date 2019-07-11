@@ -47,7 +47,7 @@ func startENB(OaiObj Oai) error {
 		fmt.Print(err)
 	}
 	// Replace interface
-	sedCommand = "191s/eno1/" + outInterface + "/g"
+	sedCommand = "s/eno1/" + outInterface + "/g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	// Replace enb IP

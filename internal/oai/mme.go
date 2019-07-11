@@ -23,24 +23,24 @@ func startMme(OaiObj Oai) error {
 	hostname, _ := os.Hostname()
 	// Configure oai-mme
 	OaiObj.Logger.Print("Configure mme.conf")
-	sedCommand := "56s/ubuntu/" + c.HssDomainName + "/g"
+	sedCommand := "56s/ubuntu/" + hostname + "/g"
 	retStatus := util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {
 		return errors.New("Set hss domain name in " + mmeConf + " failed")
 	}
-	// Configure interface name
-	outInterface := util.GetOutboundIP()
-	sedCommand = "153s/lo/" + outInterface + "/g"
-	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
-	if retStatus.Exit != 0 {
-		return errors.New("Set interface name in " + mmeConf + " failed")
-	}
-	// Get eth0 ip and replace the default one
-	outInterfaceIP, _ := util.GetInterfaceIP(OaiObj.Logger, outInterface)
+	// Get interface ip and replace the default one
+	outInterfaceIP := util.GetOutboundIP()
 	sedCommand = "154s:\".*;:\"" + outInterfaceIP + "/24\";:g"
 	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {
 		return errors.New("Set interface IP in " + mmeConf + " failed")
+	}
+	// Configure interface name
+	outInterface,_ := util.GetInterfaceByIP(outInterfaceIP)
+	sedCommand = "153s/lo/" + outInterface + "/g"
+	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
+	if retStatus.Exit != 0 {
+		return errors.New("Set interface name in " + mmeConf + " failed")
 	}
 	// Replace GUMMEI
 	OaiObj.Logger.Print("Replace MNC")
