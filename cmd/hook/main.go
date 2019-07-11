@@ -11,7 +11,7 @@ import (
 
 const (
 	logPath  = "/root/hook.log"
-	confPath = "/root/conf.yaml"
+	confPath = "/root/config/conf.yaml"
 )
 
 func main() {

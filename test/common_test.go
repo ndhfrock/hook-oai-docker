@@ -27,4 +27,5 @@ func TestCfg(t *testing.T) {
 	for i := 0; i < v.NumField(); i++ {
 		logger.Println(vn.Type().Field(i).Name, " is ", v.Field(i).Interface())
 	}
+	confStruct.ToMap(logger)
 }

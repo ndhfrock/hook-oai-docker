@@ -44,7 +44,7 @@ func startMme(OaiObj Oai) error {
 	}
 	// Replace GUMMEI
 	OaiObj.Logger.Print("Replace MNC")
-	sedCommand = "s/MNC=\"93\"/\"MNC=\"" + c.MNC + "\\\" \"/g"
+	sedCommand = "s/MNC=\"93\"/MNC=\"" + c.MNC + "\\\"/g"
 	OaiObj.Logger.Print(sedCommand)
 	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {

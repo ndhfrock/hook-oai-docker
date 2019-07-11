@@ -1,8 +1,11 @@
 package common
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
+	"reflect"
+	"strconv"
 
 	"gopkg.in/yaml.v2"
 )
@@ -43,6 +46,26 @@ func (c *Cfg) GetConf(logger *log.Logger, path string) error {
 	if err != nil {
 		logger.Println(err.Error())
 		return err
+	}
+
+	return nil
+}
+
+// ToMap converts config to map[string]string in GO
+func (c *Cfg) ToMap(logger *log.Logger) error {
+	datas := make(map[string]string)
+	vn := reflect.ValueOf(c).Elem()
+	for i := 0; i < vn.NumField(); i++ {
+		if vn.Field(i).Kind().String() == "bool" {
+			datas[vn.Type().Field(i).Name] = strconv.FormatBool(vn.Field(i).Interface().(bool))
+		} else if vn.Field(i).Kind().String() == "string" {
+			datas[vn.Type().Field(i).Name] = vn.Field(i).Interface().(string)
+		} else {
+			logger.Println("No matched kind for element ", i)
+		}
+	}
+	for k, v := range datas {
+		fmt.Println(k, " is ", v)
 	}
 
 	return nil
