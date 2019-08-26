@@ -2,7 +2,6 @@ package oai
 
 import (
 	"errors"
-	"fmt"
 	"oai-snap-in-docker/internal/pkg/util"
 	"time"
 )
@@ -29,14 +28,14 @@ func startENB(OaiObj Oai) error {
 	// Get mme ip
 	mmeIP, err := util.GetIPFromDomain(OaiObj.Logger, mmeDomain)
 	if err != nil {
-		fmt.Print(err)
+		OaiObj.Logger.Print(err)
 		mmeIP = "10.10.10.10"
 	}
-	sedCommand = "s:\"eutra_band*\":\"      eutra_band              			      = " + c.EutraBand + ";\":g"
+	sedCommand = "s:eutra_band.*:      eutra_band              			      = " + c.EutraBand + ";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
-	sedCommand = "s:\"downlink_frequency*\":\"      downlink_frequency      			      = " + c.DownlinkFrequency + ";\":g"
+	sedCommand = "s:downlink_frequency.*:      downlink_frequency      			      = " + c.DownlinkFrequency + ";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
-	sedCommand = "s:\"uplink_frequency_offset*\":\"      uplink_frequency_offset 			      = " + c.UplinkFrequencyOffset + ";\":g"
+	sedCommand = "s:uplink_frequency_offset.*:      uplink_frequency_offset 			      = " + c.UplinkFrequencyOffset + ";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	sedCommand = "175s:\".*;:\"" + mmeIP + "\";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
@@ -44,8 +43,9 @@ func startENB(OaiObj Oai) error {
 	outIP := util.GetOutboundIP()
 	outInterface, err := util.GetInterfaceByIP(outIP)
 	if err != nil {
-		fmt.Print(err)
+		OaiObj.Logger.Print(err)
 	}
+	OaiObj.Logger.Print("Outbound Interfacea and IP is ",outInterface," ",outIP)
 	// Replace interface
 	sedCommand = "s/eno1/" + outInterface + "/g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)

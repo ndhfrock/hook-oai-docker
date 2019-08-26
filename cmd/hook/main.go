@@ -24,10 +24,11 @@ func main() {
 	}
 
 	// Parse input flags
-	runCN := flag.Bool("runCN", false, "a bool")
-	runENB := flag.Bool("runENB", false, "a bool")
 	installCN := flag.Bool("installCN", false, "a bool")
 	installRAN := flag.Bool("installRAN", false, "a bool")
+	installHSS := flag.Bool("installHSS", false, "a bool")
+	installMME := flag.Bool("installMME", false, "a bool")
+	installSPGW := flag.Bool("installSPGW", false, "a bool")
 	installFlexRAN := flag.Bool("installFlexRAN", false, "a bool")
 	installMEC := flag.Bool("installMEC", false, "a bool")
 	flag.Parse()
@@ -37,13 +38,18 @@ func main() {
 	if *installCN {
 		oai.InstallCN(OaiObj)
 		oai.StartCN(OaiObj)
-	} else if *runCN {
-		oai.StartCN(OaiObj)
-	} else if *runENB {
-		oai.StartENB(OaiObj)
 	} else if *installRAN {
 		oai.InstallRAN(OaiObj)
 		oai.StartENB(OaiObj)
+	} else if *installHSS {
+		oai.InstallCN(OaiObj)
+		oai.StartHSS(OaiObj)
+	} else if *installMME {
+		oai.InstallCN(OaiObj)
+		oai.StartMME(OaiObj)
+	} else if *installSPGW {
+		oai.InstallCN(OaiObj)
+		oai.StartSPGW(OaiObj)
 	} else if *installFlexRAN {
 		oai.InstallFlexRAN(OaiObj)
 		oai.StartFlexRAN(OaiObj)

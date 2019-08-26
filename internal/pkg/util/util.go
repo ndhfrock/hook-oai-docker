@@ -62,7 +62,7 @@ func GetInterfaceIP(logger *log.Logger, interfaceName string) (string, error) {
 func GetIPFromDomain(logger *log.Logger, domain string) (string, error) {
 	addr, err := net.LookupHost(domain)
 	if err != nil {
-		logger.Print("Failed to get IP from domain")
+		logger.Print("Failed to get IP from domain,err: ", err)
 		return "", err
 	}
 	return addr[0], nil

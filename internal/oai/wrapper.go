@@ -24,6 +24,24 @@ func StartCN(OaiObj Oai) {
 	startSpgw(OaiObj)
 }
 
+// StartHSS is a wrapper for startHss
+func StartHSS(OaiObj Oai) {
+	// Start HSS
+	startHss(OaiObj)
+}
+
+// StartMME is a wrapper for startMme
+func StartMME(OaiObj Oai) {
+	// Start Mme
+	startMme(OaiObj)
+}
+
+// StartSPGW is a wrapper for startSpgw
+func StartSPGW(OaiObj Oai) {
+	// Start Mme
+	startSpgw(OaiObj)
+}
+
 //InstallRAN is a wrapper for installing OAI RAN
 func InstallRAN(OaiObj Oai) {
 
