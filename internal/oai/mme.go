@@ -2,8 +2,9 @@ package oai
 
 import (
 	"errors"
-	"oai-snap-in-docker/internal/pkg/util"
 	"os"
+
+	"github.com/oai-snap-in-docker/internal/pkg/util"
 )
 
 // StartMme : Start MME as a daemon
@@ -36,7 +37,7 @@ func startMme(OaiObj Oai) error {
 		return errors.New("Set interface IP in " + mmeConf + " failed")
 	}
 	// Configure interface name
-	outInterface,_ := util.GetInterfaceByIP(outInterfaceIP)
+	outInterface, _ := util.GetInterfaceByIP(outInterfaceIP)
 	sedCommand = "153s/lo/" + outInterface + "/g"
 	retStatus = util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, mmeConf)
 	if retStatus.Exit != 0 {

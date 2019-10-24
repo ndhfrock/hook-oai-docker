@@ -1,12 +1,13 @@
 package main
 
 import (
+	"io"
+	"os"
+
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"golang.org/x/net/context"
-	"io"
-	"os"
 )
 
 func main() {

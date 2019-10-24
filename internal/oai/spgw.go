@@ -1,7 +1,7 @@
 package oai
 
 import (
-	"oai-snap-in-docker/internal/pkg/util"
+	"github.com/oai-snap-in-docker/internal/pkg/util"
 )
 
 // StartSpgw : Start SPGW as a daemon
@@ -20,7 +20,7 @@ func startSpgw(OaiObj Oai) {
 	sedCommand := "31s:\".*;:\"" + interfaceIP + "/24\";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, spgwConf)
 	// Get outbound interface
-	outInterface,_ := util.GetInterfaceByIP(interfaceIP)
+	outInterface, _ := util.GetInterfaceByIP(interfaceIP)
 	sedCommand = "30s/lo/" + outInterface + "/g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, spgwConf)
 	// Get the nameserver from conf

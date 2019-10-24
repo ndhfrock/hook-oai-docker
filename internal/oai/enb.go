@@ -2,8 +2,9 @@ package oai
 
 import (
 	"errors"
-	"oai-snap-in-docker/internal/pkg/util"
 	"time"
+
+	"github.com/oai-snap-in-docker/internal/pkg/util"
 )
 
 func startENB(OaiObj Oai) error {
@@ -45,7 +46,7 @@ func startENB(OaiObj Oai) error {
 	if err != nil {
 		OaiObj.Logger.Print(err)
 	}
-	OaiObj.Logger.Print("Outbound Interfacea and IP is ",outInterface," ",outIP)
+	OaiObj.Logger.Print("Outbound Interfacea and IP is ", outInterface, " ", outIP)
 	// Replace interface
 	sedCommand = "s/eno1/" + outInterface + "/g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)

@@ -2,9 +2,10 @@ package oai
 
 import (
 	"log"
-	"oai-snap-in-docker/internal/pkg/common"
 	"os"
 	"time"
+
+	"github.com/oai-snap-in-docker/internal/pkg/common"
 )
 
 // Oai stores the log and conf

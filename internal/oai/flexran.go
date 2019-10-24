@@ -1,8 +1,9 @@
 package oai
 
 import (
-	"oai-snap-in-docker/internal/pkg/util"
 	"time"
+
+	"github.com/oai-snap-in-docker/internal/pkg/util"
 )
 
 func startFlexRAN(OaiObj Oai) error {

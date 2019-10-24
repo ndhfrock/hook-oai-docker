@@ -2,9 +2,10 @@ package oai
 
 import (
 	"errors"
-	"oai-snap-in-docker/internal/pkg/util"
 	"os"
 	"strings"
+
+	"github.com/oai-snap-in-docker/internal/pkg/util"
 )
 
 // StartHss : Start HSS as a daemon
@@ -17,7 +18,12 @@ func startHss(OaiObj Oai) error {
 	// Strat configuring oai-hss
 	OaiObj.Logger.Print("Configure hss.conf")
 	//Replace MySQL address
-	retStatus := util.RunCmd(OaiObj.Logger, "sed", "-i", "s/127.0.0.1/"+OaiObj.Conf.MysqlDomainName+"/g", hssConf)
+	mysqlIP, err := util.GetIPFromDomain(OaiObj.Logger, OaiObj.Conf.MysqlDomainName)
+	if err != nil {
+		OaiObj.Logger.Print(err)
+		mysqlIP = "10.10.10.10"
+	}
+	retStatus := util.RunCmd(OaiObj.Logger, "sed", "-i", "s/127.0.0.1/"+mysqlIP+"/g", hssConf)
 	if retStatus.Exit != 0 {
 		return errors.New("Set mysql IP in " + hssConf + " failed")
 	}

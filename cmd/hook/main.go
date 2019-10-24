@@ -6,7 +6,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"oai-snap-in-docker/internal/oai"
+
+	"github.com/oai-snap-in-docker/internal/oai"
 )
 
 const (

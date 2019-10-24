@@ -1,10 +1,11 @@
 package oai
 
 import (
-	"oai-snap-in-docker/internal/pkg/util"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/oai-snap-in-docker/internal/pkg/util"
 )
 
 // installSnapCore : Install Core
@@ -43,7 +44,6 @@ func installSnapCore(OaiObj Oai) {
 	if !ret {
 		util.RunCmd(OaiObj.Logger, "snap", "install", "hello-world")
 	}
-
 }
 
 // installOaicn : Install oai-cn snap
