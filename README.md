@@ -23,10 +23,10 @@ pkg :
 - common : map the config file
 - util : all required functions for autoconfiguration
 
-## Directory Structure Reference
+## Golang Directory Structure Reference
 
-[Project layout](https://github.com/golang-standards/project-layout)
+[Golang Project layout](https://github.com/golang-standards/project-layout)
 =======
 # hook-oai-docker
 hook file for openairinterface automated build inside docker container
->>>>>>> 6e7cb0aa636d16eaeca38a04b2fbc0a0648016c4
+
