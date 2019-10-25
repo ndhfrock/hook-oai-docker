@@ -7,7 +7,7 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/oai-snap-in-docker/internal/oai"
+	"github.com/hook-oai-docker/internal/oai"
 )
 
 const (

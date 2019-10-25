@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/oai-snap-in-docker/internal/pkg/common"
+	"github.com/hook-oai-docker/internal/pkg/common"
 )
 
 // Oai stores the log and conf

@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/oai-snap-in-docker/internal/pkg/util"
+	"github.com/hook-oai-docker/internal/pkg/util"
 )
 
 // StartHss : Start HSS as a daemon

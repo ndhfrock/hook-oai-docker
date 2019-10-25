@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/oai-snap-in-docker/internal/pkg/util"
+	"github.com/hook-oai-docker/internal/pkg/util"
 )
 
 // installSnapCore : Install Core

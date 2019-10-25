@@ -1,7 +1,7 @@
 package oai
 
 import (
-	"github.com/oai-snap-in-docker/internal/pkg/util"
+	"github.com/hook-oai-docker/internal/pkg/util"
 )
 
 // StartSpgw : Start SPGW as a daemon
