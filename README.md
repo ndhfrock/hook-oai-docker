@@ -1,11 +1,11 @@
 
-# oai-snap-in-docker
+# hook-oai-docker
+hook file for openairinterface automated build and configuration inside docker container
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/tig4605246/snap-hook-for-docker)](https://goreportcard.com/report/github.com/tig4605246/snap-hook-for-docker)
 
 This project includes:
-c
-md :
+cmd :
 - hook: For installing snap and configure files inside docker
 - gen: For building new version of OAI snap Docker container
 
@@ -26,7 +26,5 @@ pkg :
 ## Golang Directory Structure Reference
 
 [Golang Project layout](https://github.com/golang-standards/project-layout)
-=======
-# hook-oai-docker
-hook file for openairinterface automated build inside docker container
+
 

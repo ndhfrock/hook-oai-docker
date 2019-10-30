@@ -30,6 +30,7 @@ func startENB(OaiObj Oai) error {
 	mmeIP, err := util.GetIPFromDomain(OaiObj.Logger, mmeDomain)
 	if err != nil {
 		OaiObj.Logger.Print(err)
+		util.RunCmd(OaiObj.Logger, "/root/hook", "-installRAN")
 		mmeIP = "10.10.10.10"
 	}
 	sedCommand = "s:eutra_band.*:      eutra_band              			      = " + c.EutraBand + ";:g"
