@@ -30,7 +30,6 @@ func installSnapCore(OaiObj Oai) {
 				retStatus = util.RunCmd(OaiObj.Logger, "snap", "install", "core", "--channel=edge")
 			} else {
 				OaiObj.Logger.Print("snapd is ready and core is installed")
-				util.RunCmd(OaiObj.Logger, "/root/hook", "-installRAN")
 				break
 			}
 		}
