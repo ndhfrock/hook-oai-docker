@@ -72,9 +72,11 @@ func startENB(OaiObj Oai) error {
 		var flexranIP string
 		OaiObj.Logger.Print("Configure FlexRAN Parameters")
 		flexranIP, err = util.GetIPFromDomain(OaiObj.Logger, c.FlexRANDomainName)
-		if err != nil {
-			OaiObj.Logger.Print(err)
-			OaiObj.Logger.Print("Getting IP of FlexRAN failed, try again later")
+		// Loop until oairan could connect to flexran
+		for flexranIP == "" {
+			flexranIP, err = util.GetIPFromDomain(OaiObj.Logger, c.FlexRANDomainName)
+			OaiObj.Logger.Print("FlexRAN cannot be connected, trying again in 5 seconds")
+			time.Sleep(5 * time.Second)
 		}
 		sedCommand = "s:FLEXRAN_ENABLED.*;:FLEXRAN_ENABLED        = \"yes\";:g"
 		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
@@ -166,9 +168,11 @@ func startENBSlicing(OaiObj Oai) error {
 		var flexranIP string
 		OaiObj.Logger.Print("Configure FlexRAN Parameters")
 		flexranIP, err = util.GetIPFromDomain(OaiObj.Logger, c.FlexRANDomainName)
-		if err != nil {
-			OaiObj.Logger.Print(err)
-			OaiObj.Logger.Print("Getting IP of FlexRAN failed, try again later")
+		// Loop until oairan could connect to flexran
+		for flexranIP == "" {
+			flexranIP, err = util.GetIPFromDomain(OaiObj.Logger, c.FlexRANDomainName)
+			OaiObj.Logger.Print("FlexRAN cannot be connected, trying again in 5 seconds")
+			time.Sleep(5 * time.Second)
 		}
 		sedCommand = "s:FLEXRAN_ENABLED.*;:FLEXRAN_ENABLED        = \"yes\";:g"
 		util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
