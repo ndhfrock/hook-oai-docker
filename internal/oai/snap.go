@@ -3,7 +3,6 @@ package oai
 import (
 	"os"
 	"os/exec"
-	"strings"
 	"time"
 
 	"github.com/hook-oai-docker/internal/pkg/util"
@@ -23,24 +22,16 @@ func installSnapCore(OaiObj Oai) {
 	}
 	//Loop until package is installed
 	if !ret {
-		retStatus := util.RunCmd(OaiObj.Logger, "snap", "install", "core", "--channel=edge")
-		Snapfail := false
-		for {
-			if len(retStatus.Stderr[0]) > 0 {
-				Snapfail = strings.Contains(retStatus.Stderr[0], "error")
-			}
-			if Snapfail {
-				OaiObj.Logger.Print("Wait for snapd being ready")
-				time.Sleep(1 * time.Second)
-				retStatus = util.RunCmd(OaiObj.Logger, "snap", "install", "core", "--channel=edge")
-			} else {
-				OaiObj.Logger.Print("snapd is ready and core is installed")
-				break
-			}
+		util.RunCmd(OaiObj.Logger, "snap", "install", "core", "--channel=edge")
+		//Snapfail := false
+		for ret == false {
+			util.RunCmd(OaiObj.Logger, "snap", "install", "core", "--channel=edge")
+			OaiObj.Logger.Print("Wait for snapd being ready")
+			time.Sleep(5 * time.Second)
+			ret, err = util.CheckSnapPackageExist(OaiObj.Logger, "core")
 		}
 	}
 
-	/**
 	// Install hello-world
 	OaiObj.Logger.Print("Installing hello-world")
 	ret, err = util.CheckSnapPackageExist(OaiObj.Logger, "hello-world")
@@ -50,7 +41,7 @@ func installSnapCore(OaiObj Oai) {
 	if !ret {
 		util.RunCmd(OaiObj.Logger, "snap", "install", "hello-world")
 	}
-	*/
+
 }
 
 // installOaicn : Install oai-cn snap

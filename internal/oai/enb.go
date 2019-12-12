@@ -30,12 +30,14 @@ func startENB(OaiObj Oai) error {
 	}
 	// Get mme ip
 	mmeIP, err := util.GetIPFromDomain(OaiObj.Logger, mmeDomain)
-	if err != nil {
-		OaiObj.Logger.Print(err)
-		// run the config again
-		StartENB(OaiObj)
-		mmeIP = "10.10.10.10"
+	mmeIP = ""
+	// Loop until oairan could connect to oaicn
+	for mmeIP == "" {
+		mmeIP, err = util.GetIPFromDomain(OaiObj.Logger, mmeDomain)
+		OaiObj.Logger.Print("MME cannot be connected, trying again in 15 seconds")
+		time.Sleep(15 * time.Second)
 	}
+	OaiObj.Logger.Print("Connected to OAICN !")
 	sedCommand = "s:eutra_band.*:      eutra_band              			      = " + c.EutraBand + ";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
 	sedCommand = "s:downlink_frequency.*:      downlink_frequency      			      = " + c.DownlinkFrequency + ";:g"
@@ -123,11 +125,12 @@ func startENBSlicing(OaiObj Oai) error {
 	}
 	// Get mme ip
 	mmeIP, err := util.GetIPFromDomain(OaiObj.Logger, mmeDomain)
-	if err != nil {
-		OaiObj.Logger.Print(err)
-		//if failed run the config again
-		StartENBSlicing(OaiObj)
-		mmeIP = "10.10.10.10"
+	mmeIP = ""
+	// Loop until oairan could connect to oaicn
+	for mmeIP == "" {
+		mmeIP, err = util.GetIPFromDomain(OaiObj.Logger, mmeDomain)
+		OaiObj.Logger.Print("MME cannot be connected, trying again in 15 seconds")
+		time.Sleep(15 * time.Second)
 	}
 	sedCommand = "s:eutra_band.*:      eutra_band              			      = " + c.EutraBand + ";:g"
 	util.RunCmd(OaiObj.Logger, "sed", "-i", sedCommand, enbConf)
