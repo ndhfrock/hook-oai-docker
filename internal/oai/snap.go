@@ -2,10 +2,15 @@ package oai
 
 import (
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
 	"github.com/hook-oai-docker/internal/pkg/util"
+	"gopkg.in/src-d/go-git.v4"
+	. "gopkg.in/src-d/go-git.v4/_examples"
+	"gopkg.in/src-d/go-git.v4/plumbing"
+	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
 )
 
 // installSnapCore : Install Core
@@ -35,6 +40,7 @@ func installSnapCore(OaiObj Oai) {
 		}
 	}
 
+	/**
 	// Install hello-world
 	OaiObj.Logger.Print("Installing hello-world")
 	ret, err = util.CheckSnapPackageExist(OaiObj.Logger, "hello-world")
@@ -44,6 +50,7 @@ func installSnapCore(OaiObj Oai) {
 	if !ret {
 		util.RunCmd(OaiObj.Logger, "snap", "install", "hello-world")
 	}
+	*/
 }
 
 // installOaicn : Install oai-cn snap
@@ -83,6 +90,47 @@ func installOairan(OaiObj Oai) {
 	OaiObj.Logger.Print("Wait 5 seconds... OK now cn should be ready")
 	time.Sleep(10 * time.Second)
 
+}
+
+// installOairanSlicing : Install oai-ran from samuel repository branch "flexran_LTE_slicing_integration"
+func installOairanSlicing(OaiObj Oai) {
+	//if repo has not been cloned
+	if _, err := os.Stat("/LTE_Mac_scheduler_with_network_slicing"); os.IsNotExist(err) {
+		// Install oai-ran snap
+		OaiObj.Logger.Print("Installing oai-ran")
+		// Clone the given repository to the given directory
+		Info("git clone https://gitlab.com/changshengliusamuel/LTE_Mac_scheduler_with_network_slicing.git")
+
+		_, err := git.PlainClone("/LTE_Mac_scheduler_with_network_slicing", false, &git.CloneOptions{
+			Auth: &http.BasicAuth{
+				Username: "nadhifrock",
+				Password: "Scruzers97",
+			},
+			URL:           "https://gitlab.com/changshengliusamuel/LTE_Mac_scheduler_with_network_slicing.git",
+			ReferenceName: plumbing.NewBranchReferenceName("flexran_LTE_slicing_integration"),
+			Progress:      os.Stdout,
+		})
+
+		CheckIfError(err)
+		if err != nil {
+			OaiObj.Logger.Print(err)
+		}
+
+		//build enb
+		OaiObj.Logger.Print("Building eNB with USRP...")
+		out, err := exec.Command("root/buildenb.sh").Output()
+
+		if err != nil {
+			OaiObj.Logger.Print("Err", err)
+		} else {
+			OaiObj.Logger.Print("Building the eNB...")
+			OaiObj.Logger.Print("OUT:", string(out))
+		}
+	}
+	//if repo has been cloned
+	if _, err := os.Stat("/LTE_Mac_scheduler_with_network_slicing"); !os.IsNotExist(err) {
+		OaiObj.Logger.Print("eNB already cloned and built")
+	}
 }
 
 // installFlexRAN : Install FlexRAN snap

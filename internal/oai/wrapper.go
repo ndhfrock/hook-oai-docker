@@ -49,9 +49,21 @@ func InstallRAN(OaiObj Oai) {
 	installOairan(OaiObj)
 }
 
+//InstallRANSlicing is a wrapper for installing OAI RAN
+func InstallRANSlicing(OaiObj Oai) {
+
+	// Install oai-ran snap
+	installOairanSlicing(OaiObj)
+}
+
 //StartENB is a wrapper for configuring and starting OAI RAN services
 func StartENB(OaiObj Oai) {
 	startENB(OaiObj)
+}
+
+//StartENBSlicing is a wrapper for configuring and starting OAI RAN services
+func StartENBSlicing(OaiObj Oai) {
+	startENBSlicing(OaiObj)
 }
 
 //InstallFlexRAN is a wrapper for installing FlexRAN
