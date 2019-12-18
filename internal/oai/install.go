@@ -185,6 +185,6 @@ func installStore(OaiObj Oai) {
 
 	//if repo has been cloned
 	if _, err := os.Stat("/store"); !os.IsNotExist(err) {
-		OaiObj.Logger.Print("store already cloned")
+		OaiObj.Logger.Print("store already cloned, straight to running the app!")
 	}
 }

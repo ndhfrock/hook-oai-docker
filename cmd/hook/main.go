@@ -2,7 +2,7 @@ package main
 
 // This APP is made for installing snaps in docker and
 // handle the configurations
-// Author: Kevin Hsi-Ping Hsu
+// Author: Kevin Hsi-Ping Hsu & Nadhif Muhammad Rekoputra
 import (
 	"flag"
 	"fmt"
