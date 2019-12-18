@@ -73,9 +73,11 @@ func main() {
 	} else if *installDroneStore {
 		oai.InstallStore(OaiObj)
 		oai.InstallSnap(OaiObj)
+		oai.StartDrone(OaiObj)
 	} else if *installRRMKPIStore {
 		oai.InstallStore(OaiObj)
 		oai.InstallSnap(OaiObj)
+		oai.StartRRMKPI(OaiObj)
 	} else {
 		fmt.Println("This should only be executed in container!!")
 		return
