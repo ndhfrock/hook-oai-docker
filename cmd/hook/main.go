@@ -1,7 +1,7 @@
 package main
 
-// This APP is made for installing snaps in docker and
-// handle the configurations
+// This APP is made for installing snaps and Mosaic 5G in docker
+// This APP also handle all the configurations inside the docker
 // Author: Kevin Hsi-Ping Hsu & Nadhif Muhammad Rekoputra
 import (
 	"flag"
