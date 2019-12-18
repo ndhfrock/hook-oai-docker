@@ -13,10 +13,11 @@ internal/oai
 - enb.go : configure and start oai-ran
 - flexran.go : configure and start flexran
 - hss.go : configure and start hss
+- install.go : install snap core, mosaic5g snap, and other oai component
 - mme.go : configure and start mme
 - oai.go : store and log the oai conf file (gotten from common)
-- snap.go : install snap core, and mosaic5g snap
 - spgw.co : configure and start spgw
+- store.go : configure and start mosaic5g store app
 - wrapper.go : wrapper for the function
 
 pkg :
