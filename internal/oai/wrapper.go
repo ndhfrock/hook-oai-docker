@@ -86,3 +86,24 @@ func InstallMEC(OaiObj Oai) {
 	// Install ll-mec snap
 	installMEC(OaiObj)
 }
+
+//InstallStore is a wrapper for installing Store
+func InstallStore(OaiObj Oai) {
+
+	// Install store mosaic 5g
+	installStore(OaiObj)
+}
+
+//StartDrone start drone app from store
+func StartDrone(OaiObj Oai) {
+
+	// Start drone store app
+	startDrone(OaiObj)
+}
+
+//StartRRMKPI start drone app from store
+func StartRRMKPI(OaiObj Oai) {
+
+	// Start drone store app
+	startRRMKPI(OaiObj)
+}

@@ -157,3 +157,34 @@ func installMEC(OaiObj Oai) {
 	time.Sleep(5 * time.Second)
 
 }
+
+//installStore : install store mosaic 5g
+func installStore(OaiObj Oai) {
+	//if repo has not been cloned
+	if _, err := os.Stat("/store"); os.IsNotExist(err) {
+		// Install oai-ran snap
+		OaiObj.Logger.Print("Installing store")
+		// Clone the given repository to the given directory
+		Info("git clone https://gitlab.eurecom.fr/mosaic5g/store.git")
+
+		_, err := git.PlainClone("/store", false, &git.CloneOptions{
+			Auth: &http.BasicAuth{
+				Username: "ndhfrock",
+				Password: "Scruzers97",
+			},
+			URL:           "https://gitlab.eurecom.fr/mosaic5g/store.git",
+			ReferenceName: plumbing.NewBranchReferenceName("develop"),
+			Progress:      os.Stdout,
+		})
+
+		CheckIfError(err)
+		if err != nil {
+			OaiObj.Logger.Print(err)
+		}
+	}
+
+	//if repo has been cloned
+	if _, err := os.Stat("/store"); !os.IsNotExist(err) {
+		OaiObj.Logger.Print("store already cloned")
+	}
+}
