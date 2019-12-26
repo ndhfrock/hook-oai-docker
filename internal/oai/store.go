@@ -19,7 +19,7 @@ func startDrone(OaiObj Oai) {
 
 	//Starting drone app
 	OaiObj.Logger.Print("Starting Drone App")
-	out, err := exec.Command("python", "store/sdk/frontend/drone.py", "--port=8080", "--address="+outIP).Output()
+	out, err := exec.Command("python", "store/sdk/frontend/drone/drone.py", "--port=8080", "--address="+outIP).Output()
 
 	if err != nil {
 		fmt.Println("Err", err)

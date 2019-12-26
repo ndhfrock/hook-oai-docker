@@ -32,6 +32,7 @@ func installSnapCore(OaiObj Oai) {
 		}
 	}
 
+	/**
 	// Install hello-world
 	OaiObj.Logger.Print("Installing hello-world")
 	ret, err = util.CheckSnapPackageExist(OaiObj.Logger, "hello-world")
@@ -41,7 +42,7 @@ func installSnapCore(OaiObj Oai) {
 	if !ret {
 		util.RunCmd(OaiObj.Logger, "snap", "install", "hello-world")
 	}
-
+	*/
 }
 
 // installOaicn : Install oai-cn snap

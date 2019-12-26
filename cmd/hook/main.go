@@ -35,8 +35,8 @@ func main() {
 	installSPGW := flag.Bool("installSPGW", false, "a bool")
 	installFlexRAN := flag.Bool("installFlexRAN", false, "a bool")
 	installMEC := flag.Bool("installMEC", false, "a bool")
-	installDroneStore := flag.Bool("instanllStore", false, "a bool")
-	installRRMKPIStore := flag.Bool("instanllRRMKPIStore", false, "a bool")
+	installDroneStore := flag.Bool("installDroneStore", false, "a bool")
+	installRRMKPIStore := flag.Bool("installRRMKPIStore", false, "a bool")
 	flag.Parse()
 	// Decide actions based on flags
 	if *installCN {

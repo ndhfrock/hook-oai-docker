@@ -20,6 +20,10 @@ type Cfg struct {
 	UplinkFrequencyOffset string `yaml:"uplinkFrequencyOffset"`
 	FlexRAN               bool   `yaml:"flexRAN"`
 	// Global setting
+	Elasticsearch          bool   `yaml:"elasticsearch"`
+	Kibana                 bool   `yaml:"kibana"`
+	DroneStore             bool   `yaml:"droneStore"`
+	RRMKPIStore            bool   `yaml:"rrmkpiStore"`
 	ConfigurationPathofCN  string `yaml:"configurationPathofCN"`
 	ConfigurationPathofRAN string `yaml:"configurationPathofRAN"`
 	SnapBinaryPath         string `yaml:"snapBinaryPath"`
